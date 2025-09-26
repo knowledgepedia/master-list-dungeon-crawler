@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risk Register: Dungeon Crawler v5.0</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827; /* Dark gray background */
+            color: #f3f4f6;
+        }
+        .xp-gain {
+            animation: xp-animation 1s ease-out forwards;
+        }
+        @keyframes xp-animation {
+            from {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateY(-40px);
+                opacity: 0;
+            }
+        }
+        .level-up {
+            animation: level-up-animation 1.5s ease-out forwards;
+        }
+        @keyframes level-up-animation {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        /* Custom scrollbar for a more game-like feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1f2937;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4f46e5;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6366f1;
+        }
+        .table-cell-input, .table-cell-select {
+            background-color: #374151;
+            border: 1px solid #4b5563;
+            color: #f3f4f6;
+            width: 100%;
+            padding: 4px 6px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .table-cell-input:focus, .table-cell-select:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 2px #4f46e5;
+        }
+        /* Custom modal backdrop */
+        .modal-backdrop {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+    </style>
+</head>
+<body class="p-4 md:p-6 lg:p-8">
+
+    <div id="app" class="max-w-screen-2xl mx-auto">
+        <!-- Header -->
+        <header class="mb-6 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <div>
+                <h1 class="text-3xl font-bold text-white">Risk Register: Dungeon Crawler</h1>
+                <p class="text-indigo-400">Turn your P2P risk assessment into an adventure!</p>
+            </div>
+            <button id="export-csv" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105">
+                Export to CSV (Excel)
+            </button>
+        </header>
+
+        <!-- Game Dashboard -->
+        <div id="dashboard" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div class="bg-gray-800 p-4 rounded-lg shadow-lg text-center">
+                <h3 class="text-sm font-medium text-gray-400">PLAYER</h3>
+                <p id="player-title" class="text-2xl font-bold text-indigo-400 transition-all duration-500">Audit Apprentice</p>
+            </div>
+            <div class="bg-gray-800 p-4 rounded-lg shadow-lg text-center">
+                <h3 class="text-sm font-medium text-gray-400">CURRENT LEVEL</h3>
+                <p id="player-level" class="text-2xl font-bold text-white transition-all duration-500">1</p>
+            </div>
+            <div class="bg-gray-800 p-4 rounded-lg shadow-lg text-center relative">
+                <h3 class="text-sm font-medium text-gray-400">EXPERIENCE</h3>
+                <p class="text-2xl font-bold text-white">
+                    <span id="player-xp">0</span> / <span id="xp-next-level">200</span> XP
+                </p>
+                <div class="w-full bg-gray-700 rounded-full h-2.5 mt-2">
+                    <div id="xp-bar" class="bg-indigo-600 h-2.5 rounded-full" style="width: 0%"></div>
+                </div>
+                <div id="xp-toast-container" class="absolute top-0 left-1/2 -translate-x-1/2"></div>
+            </div>
+        </div>
+        
+        <!-- Action Panel -->
+        <div class="bg-gray-800 p-4 rounded-lg shadow-lg mb-6 flex flex-wrap gap-4 justify-center md:justify-start">
+             <button id="add-risk-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105">
+                + Spot New Monster (Risk)
+            </button>
+            <button id="random-encounter-btn" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105">
+                ? Random Encounter
+            </button>
+             <button id="scroll-questioning-btn" class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105">
+                📜 Scroll of Questioning
+            </button>
+        </div>
+
+
+        <!-- Dungeon (Risk Register Table) -->
+        <div class="bg-gray-800 rounded-lg shadow-lg overflow-x-auto">
+            <table class="w-full min-w-[2200px] text-sm text-left text-gray-300">
+                <thead class="text-xs text-gray-400 uppercase bg-gray-900">
+                    <tr>
+                        <th scope="col" class="px-4 py-3 w-[3%]">Sr. No.</th>
+                        <th scope="col" class="px-4 py-3 w-[10%]">Process</th>
+                        <th scope="col" class="px-4 py-3 w-[12%]">Scope Area</th>
+                        <th scope="col" class="px-4 py-3 w-[15%]">Specific Audit Area</th>
+                        <th scope="col" class="px-4 py-3 w-[12%]">Risks Involved</th>
+                        <th scope="col" class="px-4 py-3 w-[12%]">Potential Impact</th>
+                        <th scope="col" class="px-4 py-3 w-[12%]">Control Objective</th>
+                        <th scope="col" class="px-4 py-3 w-[12%]">Audit Objective</th>
+                        <th scope="col" class="px-4 py-3 w-[12%]">Audit Procedures</th>
+                        <th scope="col" class="px-4 py-3 w-[5%]">Status</th>
+                    </tr>
+                </thead>
+                <tbody id="risk-table-body">
+                    <!-- Rows will be dynamically inserted here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modals Container -->
+    <div id="modal-container"></div>
+    
+    <script>
+        const appState = {
+            risks: [],
+            player: {
+                level: 1,
+                xp: 0,
+                title: 'Audit Apprentice'
+            },
+            levels: [
+                { level: 1, xp_required: 0, title: 'Audit Apprentice' },
+                { level: 2, xp_required: 200, title: 'Risk Rover' },
+                { level: 3, xp_required: 500, title: 'Control Champion' },
+                { level: 4, xp_required: 1000, title: 'P2P Paladin' },
+                { level: 5, xp_required: 2000, title: 'Audit Archmage' },
+                { level: 6, xp_required: 3500, title: 'Governance Guardian' },
+                { level: 7, xp_required: 5000, title: 'Risk Master' },
+                { level: 8, xp_required: 7500, title: 'Audit Legend' },
+                { level: 9, xp_required: 10000, title: 'The P2P Oracle' }
+            ],
+            // p2pStages is used for Random Encounter, keyed by Scope Area
+            p2pStages: [ 
+                "Periodic budgeting & procurement planning", "Spend analytics", "Compliance"
+            ],
+             // p2pAuditData is used for the dropdowns, keyed by Scope Area
+             p2pAuditData: {
+                "Periodic budgeting & procurement planning": [
+                    { process: "Procurement to Pay", scope: "Periodic budgeting & procurement planning", audit: "Review of underlying assumptions and data on the basis of which budget is prepared." },
+                    { process: "Procurement to Pay", scope: "Periodic budgeting & procurement planning", audit: "Linkage between the budget and the organization's strategic objectives." },
+                    { process: "Procurement to Pay", scope: "Periodic budgeting & procurement planning", audit: "Effective communication of the budget prepared with those concerned." },
+                    { process: "Procurement to Pay", scope: "Periodic budgeting & procurement planning", audit: "Validation of the structured review and approval process." },
+                    { process: "Procurement to Pay", scope: "Periodic budgeting & procurement planning", audit: "Scrutiny of tools and processes involved in the budgeting process." },
+                    { process: "Procurement to Pay", scope: "Periodic budgeting & procurement planning", audit: "Confirming that procurement needs from different departments are consolidated and addressed at the company level." },
+                    { process: "Procurement to Pay", scope: "Periodic budgeting & procurement planning", audit: "Alignment between procurement plans and production/sales forecasts." },
+                    { process: "Procurement to Pay", scope: "Periodic budgeting & procurement planning", audit: "Controls around emergency/unbudgeted procurement." },
+                    { process: "Procurement to Pay", scope: "Periodic budgeting & procurement planning", audit: "Reviewing if the plan considers effective balancing between excess procurement and inventory stock-outs." },
+                    { process: "Procurement to Pay", scope: "Periodic budgeting & procurement planning", audit: "Review of quantity break-based planning (MOQ, EOQ, and bulk discounts)." }
+                ],
+                "Spend analytics": [
+                    { process: "Procurement to Pay", scope: "Spend analytics", audit: "Verification that the spend data is complete and accurate." },
+                    { process: "Procurement to Pay", scope: "Spend analytics", audit: "Regular review of spend reports by management for selected months, investigating any material variances." }
+                ],
+                "Compliance": [
+                    { process: "Statutory Compliance - Procurement to Pay", scope: "Compliance", audit: "Testing the calculation and deduction of TDS on vendor payments, ensuring the base value for deduction correctly excludes the GST amount as per tax regulations." },
+                    { process: "Statutory Compliance - Procurement to Pay", scope: "Compliance", audit: "Identifying transactions liable under the Reverse Charge Mechanism (RCM) and verifying the generation of a self-invoice and the timely payment and disclosure of the corresponding GST liability." },
+                    { process: "Statutory Compliance - Procurement to Pay", scope: "Compliance", audit: "Reviewing specific expense ledgers to ensure ITC has not been claimed on items listed under blocked credits." },
+                    { process: "Statutory Compliance - Procurement to Pay", scope: "Compliance", audit: "Tracing the IGST and customs duty amounts from BOE to the general ledger and the ITC register to confirm the accuracy and basis of the ITC claim." },
+                    { process: "Statutory Compliance - Procurement to Pay", scope: "Compliance", audit: "Verifying that payments for imports of goods have been completed within six months from the date of shipment as required by FEMA guidelines." },
+                    { process: "Statutory Compliance - Procurement to Pay", scope: "Compliance", audit: "Confirming that for advance remittances made to overseas vendors, the corresponding Bill of Entry has been submitted to the authorized dealer bank within the prescribed regulatory timeline." },
+                    { process: "Statutory Compliance - Procurement to Pay", scope: "Compliance", audit: "Assessing payments for the import of services to ensure appropriate TDS has been deducted." }
+                ]
+             },
+            initializedFields: {} // { 'riskId-fieldName': true }
+        };
+
+        // DOM Elements
+        const addRiskBtn = document.getElementById('add-risk-btn');
+        const tableBody = document.getElementById('risk-table-body');
+        const playerLevelEl = document.getElementById('player-level');
+        const playerXpEl = document.getElementById('player-xp');
+        const xpNextLevelEl = document.getElementById('xp-next-level');
+        const playerTitleEl = document.getElementById('player-title');
+        const xpBar = document.getElementById('xp-bar');
+        const dashboardEl = document.getElementById('dashboard');
+        const exportBtn = document.getElementById('export-csv');
+        const randomEncounterBtn = document.getElementById('random-encounter-btn');
+        const scrollQuestioningBtn = document.getElementById('scroll-questioning-btn');
+        const modalContainer = document.getElementById('modal-container');
+
+        const xpValues = {
+            spot: 10,
+            risksInvolved: 20,
+            potentialImpact: 15,
+            controlObjective: 10,
+            auditObjective: 10,
+            auditProcedures: 25,
+            neutralizeBonus: 30,
+            scroll: 50
+        };
+
+        function saveData() {
+            localStorage.setItem('dungeonCrawlerData', JSON.stringify(appState));
+        }
+
+        function loadData() {
+            const savedData = localStorage.getItem('dungeonCrawlerData');
+            if (savedData) {
+                const parsedData = JSON.parse(savedData);
+                appState.risks = parsedData.risks || [];
+                appState.player = parsedData.player || appState.player;
+                appState.initializedFields = parsedData.initializedFields || {};
+            }
+        }
+
+        function showXpGain(amount) {
+            const container = document.getElementById('xp-toast-container');
+            const xpEl = document.createElement('div');
+            xpEl.className = 'xp-gain font-bold text-lg text-green-400';
+            xpEl.textContent = `+${amount} XP`;
+            container.appendChild(xpEl);
+            setTimeout(() => {
+                xpEl.remove();
+            }, 1000);
+        }
+
+        function gainXp(amount) {
+            appState.player.xp += amount;
+            showXpGain(amount);
+            checkLevelUp();
+            updateDashboard();
+            saveData();
+        }
+
+        function checkLevelUp() {
+            const currentLevelInfo = appState.levels[appState.player.level - 1];
+            const nextLevelInfo = appState.levels[appState.player.level];
+            
+            if (nextLevelInfo && appState.player.xp >= nextLevelInfo.xp_required) {
+                appState.player.level++;
+                appState.player.title = nextLevelInfo.title;
+                dashboardEl.classList.add('level-up');
+                setTimeout(() => {
+                   dashboardEl.classList.remove('level-up');
+                }, 1500);
+            }
+        }
+        
+        function updateDashboard() {
+            const currentLevelIndex = appState.player.level - 1;
+            const currentLevelInfo = appState.levels[currentLevelIndex];
+            const nextLevelInfo = appState.levels[currentLevelIndex + 1];
+
+            playerLevelEl.textContent = appState.player.level;
+            playerXpEl.textContent = appState.player.xp;
+            playerTitleEl.textContent = appState.player.title;
+
+            if (nextLevelInfo) {
+                const xpForCurrentLevel = appState.player.xp - currentLevelInfo.xp_required;
+                const xpNeededForNextLevel = nextLevelInfo.xp_required - currentLevelInfo.xp_required;
+                xpNextLevelEl.textContent = nextLevelInfo.xp_required;
+                const progressPercentage = Math.min(100, (xpForCurrentLevel / xpNeededForNextLevel) * 100);
+                xpBar.style.width = `${progressPercentage}%`;
+            } else {
+                xpNextLevelEl.textContent = 'MAX';
+                xpBar.style.width = '100%';
+            }
+        }
+
+        function renderTable() {
+            tableBody.innerHTML = '';
+            if (appState.risks.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="10" class="text-center py-8 text-gray-500">The dungeon is empty. Spot your first monster to begin!</td></tr>`;
+            } else {
+                appState.risks.forEach((risk, index) => {
+                    const row = document.createElement('tr');
+                    const statusColor = getStatusColor(risk.status);
+                    row.className = `border-b border-gray-700 ${statusColor}`;
+
+                    row.innerHTML = `
+                        <td class="px-4 py-2 text-center text-xs font-bold">${appState.risks.length - index}</td>
+                        <td class="px-4 py-2 text-xs">${risk.process}</td>
+                        <td class="px-4 py-2 text-xs">${risk.scopeArea}</td>
+                        <td class="px-4 py-2 text-xs">${risk.specificAuditArea}</td>
+                        <td class="px-4 py-2"><textarea data-id="${risk.id}" data-field="risksInvolved" class="table-cell-input h-20 resize-y">${risk.risksInvolved}</textarea></td>
+                        <td class="px-4 py-2"><textarea data-id="${risk.id}" data-field="potentialImpact" class="table-cell-input h-20 resize-y">${risk.potentialImpact}</textarea></td>
+                        <td class="px-4 py-2"><textarea data-id="${risk.id}" data-field="controlObjective" class="table-cell-input h-20 resize-y">${risk.controlObjective}</textarea></td>
+                        <td class="px-4 py-2"><textarea data-id="${risk.id}" data-field="auditObjective" class="table-cell-input h-20 resize-y">${risk.auditObjective}</textarea></td>
+                        <td class="px-4 py-2"><textarea data-id="${risk.id}" data-field="auditProcedures" class="table-cell-input h-20 resize-y">${risk.auditProcedures}</textarea></td>
+                        <td class="px-4 py-2">
+                            <select data-id="${risk.id}" data-field="status" class="table-cell-select">
+                                <option ${risk.status === 'Spotted' ? 'selected' : ''} value="Spotted">Spotted</option>
+                                <option ${risk.status === 'Fighting' ? 'selected' : ''} value="Fighting">Fighting</option>
+                                <option ${risk.status === 'Neutralized' ? 'selected' : ''} value="Neutralized">Neutralized</option>
+                            </select>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            }
+        }
+        
+        function getStatusColor(status) {
+             switch (status) {
+                case 'Spotted': return 'bg-yellow-900/20';
+                case 'Fighting': return 'bg-orange-900/20';
+                case 'Neutralized': return 'bg-green-900/20';
+                default: return 'bg-gray-800';
+            }
+        }
+
+        function createRisk(context) {
+            const newRisk = {
+                id: Date.now().toString(),
+                process: context.process,
+                scopeArea: context.scopeArea,
+                specificAuditArea: context.specificAuditArea,
+                risksInvolved: '',
+                potentialImpact: '',
+                controlObjective: '',
+                auditObjective: '',
+                auditProcedures: '',
+                status: 'Spotted',
+            };
+            appState.risks.unshift(newRisk);
+            gainXp(xpValues.spot);
+            renderAndSave();
+        }
+
+        function handleTableInput(e) {
+            const { id, field } = e.target.dataset;
+            if (!id || !field) return;
+
+            const riskIndex = appState.risks.findIndex(r => r.id === id);
+            if (riskIndex === -1) return;
+
+            const oldValue = appState.risks[riskIndex][field];
+            const newValue = e.target.value;
+            appState.risks[riskIndex][field] = newValue;
+            
+            const fieldKey = `${id}-${field}`;
+
+            // Award XP only on the first meaningful input
+            if (newValue.trim() !== '' && !appState.initializedFields[fieldKey]) {
+                let earnedXp = 0;
+                switch (field) {
+                    case 'risksInvolved': earnedXp = xpValues.risksInvolved; break;
+                    case 'potentialImpact': earnedXp = xpValues.potentialImpact; break;
+                    case 'controlObjective': earnedXp = xpValues.controlObjective; break;
+                    case 'auditObjective': earnedXp = xpValues.auditObjective; break;
+                    case 'auditProcedures': earnedXp = xpValues.auditProcedures; break;
+                }
+
+                if (earnedXp > 0) {
+                    gainXp(earnedXp);
+                    appState.initializedFields[fieldKey] = true;
+                }
+            }
+
+            if (field === 'status') {
+                if (newValue === 'Neutralized' && oldValue !== 'Neutralized') {
+                    if (appState.risks[riskIndex].auditProcedures.trim() !== '') {
+                        const bonusKey = `${id}-neutralizeBonus`;
+                        if (!appState.initializedFields[bonusKey]) {
+                            gainXp(xpValues.neutralizeBonus);
+                            appState.initializedFields[bonusKey] = true;
+                        }
+                    }
+                }
+                renderAndSave();
+            } else {
+                saveData();
+            }
+        }
+
+        function renderAndSave() {
+            renderTable();
+            saveData();
+        }
+
+        function showModal(title, content, actions = []) {
+            const modalId = `modal-${Date.now()}`;
+            const modalHTML = `
+                <div id="${modalId}" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop">
+                    <div class="bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full p-6 border border-gray-700">
+                        <h2 class="text-2xl font-bold mb-4 text-white">${title}</h2>
+                        <div class="text-gray-300 mb-6 max-h-[60vh] overflow-y-auto">${content}</div>
+                        <div class="flex justify-end gap-4 mt-6">
+                            ${actions.map(action => `<button class="${action.classes}" onclick="${action.handler}">${action.text}</button>`).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+            modalContainer.innerHTML = modalHTML;
+        }
+
+        window.closeModal = function() {
+            modalContainer.innerHTML = '';
+        }
+
+        function handleAddRiskStep1() {
+            const stagesWithData = Object.keys(appState.p2pAuditData);
+            const options = stagesWithData.map(stage => `<option value="${stage}">${stage}</option>`).join('');
+            const content = `
+                <p><strong>Step 1 of 2:</strong> Select the Scope Area where you've spotted a new risk.</p>
+                <select id="p2p-stage-select" class="w-full mt-4 p-2 rounded bg-gray-700 border border-gray-600 text-white">
+                    <option value="">-- Select a Scope Area --</option>
+                    ${options}
+                </select>
+            `;
+            const actions = [
+                { text: 'Close', classes: 'bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded', handler: 'closeModal()' },
+                { text: 'Next &rarr;', classes: 'bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded', handler: 'handleAddRiskStep2()' }
+            ];
+            showModal('Spot a New Risk', content, actions);
+        }
+        
+        window.handleAddRiskStep2 = function() {
+            const stageSelect = document.getElementById('p2p-stage-select');
+            const selectedStage = stageSelect.value;
+            if (!selectedStage) {
+                alert('Please select a Scope Area to continue.');
+                return;
+            }
+
+            const auditAreas = appState.p2pAuditData[selectedStage];
+            const options = auditAreas.map((area, index) => `<option value="${index}">${area.audit}</option>`).join('');
+
+            const content = `
+                <p><strong>Step 2 of 2:</strong> Pinpoint the risk's location by selecting the Specific Audit Area.</p>
+                <input type="hidden" id="selected-stage" value="${selectedStage}">
+                <select id="audit-area-select" class="w-full mt-4 p-2 rounded bg-gray-700 border border-gray-600 text-white h-48" size="8">
+                    ${options}
+                </select>
+            `;
+             const actions = [
+                { text: '&larr; Back', classes: 'bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded', handler: 'handleAddRiskStep1()' },
+                { text: 'Create Risk Entry', classes: 'bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded', handler: 'confirmCreateRisk()' }
+            ];
+            showModal('Pinpoint Location', content, actions);
+        }
+
+        window.confirmCreateRisk = function() {
+            const stage = document.getElementById('selected-stage').value;
+            const auditAreaSelect = document.getElementById('audit-area-select');
+            const selectedIndex = auditAreaSelect.value;
+
+            if (selectedIndex === "") {
+                alert('Please select a Specific Audit Area.');
+                return;
+            }
+
+            const auditData = appState.p2pAuditData[stage][selectedIndex];
+            
+            createRisk({
+                process: auditData.process,
+                scopeArea: auditData.scope,
+                specificAuditArea: auditData.audit
+            });
+            
+            closeModal();
+        }
+
+        function handleRandomEncounter() {
+            const randomStage = appState.p2pStages[Math.floor(Math.random() * appState.p2pStages.length)];
+            const content = `
+                <p class="text-lg">A mysterious fog swirls, pushing you towards a new challenge!</p>
+                <p class="mt-4 text-2xl font-bold text-center text-purple-400 p-4 bg-gray-900 rounded">${randomStage}</p>
+                <p class="mt-4">Focus your next sprint on this area. What dangers lie hidden here?</p>
+            `;
+             const actions = [ { text: 'Close', classes: 'bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded', handler: 'closeModal()' } ];
+            showModal('Random Encounter!', content, actions);
+        }
+        
+        function handleScrollOfQuestioning() {
+            const content = `
+                <p>You unroll an ancient scroll. It whispers the wisdom of collaboration.</p>
+                <p class="mt-4">Your quest: Find a stakeholder (e.g., from AP, Procurement, Warehouse) and ask them: <strong class="text-teal-400">"What is the most frustrating or error-prone part of your process?"</strong></p>
+                <p class="mt-2">Their answer is your treasure map to the biggest risks.</p>
+            `;
+            const actions = [
+                { text: 'Close', classes: 'bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded', handler: 'closeModal()' },
+                { text: 'Quest Complete! (+50 XP)', classes: 'bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded', handler: 'completeScrollQuest()' }
+            ];
+            showModal('Scroll of Questioning', content, actions);
+        }
+
+        window.completeScrollQuest = function() {
+            gainXp(xpValues.scroll);
+            closeModal();
+        }
+
+        function exportToCSV() {
+            if (appState.risks.length === 0) {
+                 const actions = [{ text: 'OK', classes: 'bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded', handler: 'closeModal()' }];
+                 showModal('Export Warning', '<p>The risk register is empty. Add some risks before exporting.</p>', actions);
+                return;
+            }
+
+            const headers = [
+                "Sr. No.", "Process", "Scope Area", "Specific Audit Area", "Risks Involved", "Potential Impact",
+                "Control Objective", "Audit Objective", "Audit Procedures", "Status"
+            ];
+            
+            const rows = appState.risks.map((risk, index) => [
+                appState.risks.length - index,
+                risk.process, risk.scopeArea, risk.specificAuditArea, risk.risksInvolved, risk.potentialImpact,
+                risk.controlObjective, risk.auditObjective, risk.auditProcedures, risk.status
+            ].map(field => `"${String(field).replace(/"/g, '""')}"`));
+
+            const csvContent = "data:text/csv;charset=utf-8," 
+                + [headers.join(','), ...rows.map(row => row.join(','))].join('\n');
+            
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "p2p_risk_register_v5.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Event Listeners
+        addRiskBtn.addEventListener('click', handleAddRiskStep1);
+        tableBody.addEventListener('change', handleTableInput);
+        exportBtn.addEventListener('click', exportToCSV);
+        randomEncounterBtn.addEventListener('click', handleRandomEncounter);
+        scrollQuestioningBtn.addEventListener('click', handleScrollOfQuestioning);
+
+
+        // Initial Load
+        loadData();
+        updateDashboard();
+        renderTable();
+    </script>
+
+</body>
+</html>
