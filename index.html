@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Risk Register: Dungeon Crawler v5.0</title>
+    <title>Risk Register: Dungeon Crawler v6.0</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -164,36 +164,206 @@
                 { level: 8, xp_required: 7500, title: 'Audit Legend' },
                 { level: 9, xp_required: 10000, title: 'The P2P Oracle' }
             ],
-            // p2pStages is used for Random Encounter, keyed by Scope Area
-            p2pStages: [ 
-                "Periodic budgeting & procurement planning", "Spend analytics", "Compliance"
+            p2pStages: [
+                "Periodic budgeting & procurement planning", "Spend analytics", "Vendor selection and evaluation",
+                "Quotation analysis and negotiation", "Vendor onboarding", "Contract lifecycle management",
+                "Vendor data management", "Periodic vendor evaluation", "Purchase requisition", "Purchase order",
+                "Inward logistics management", "Inward goods tracking", "Goods receipt", "Quality check",
+                "Vendor returns and other adjustments", "Purchase invoice processing", "Payment and AP Management", "Compliance"
             ],
-             // p2pAuditData is used for the dropdowns, keyed by Scope Area
              p2pAuditData: {
                 "Periodic budgeting & procurement planning": [
                     { process: "Procurement to Pay", scope: "Periodic budgeting & procurement planning", audit: "Review of underlying assumptions and data on the basis of which budget is prepared." },
-                    { process: "Procurement to Pay", scope: "Periodic budgeting & procurement planning", audit: "Linkage between the budget and the organization's strategic objectives." },
-                    { process: "Procurement to Pay", scope: "Periodic budgeting & procurement planning", audit: "Effective communication of the budget prepared with those concerned." },
-                    { process: "Procurement to Pay", scope: "Periodic budgeting & procurement planning", audit: "Validation of the structured review and approval process." },
-                    { process: "Procurement to Pay", scope: "Periodic budgeting & procurement planning", audit: "Scrutiny of tools and processes involved in the budgeting process." },
-                    { process: "Procurement to Pay", scope: "Periodic budgeting & procurement planning", audit: "Confirming that procurement needs from different departments are consolidated and addressed at the company level." },
-                    { process: "Procurement to Pay", scope: "Periodic budgeting & procurement planning", audit: "Alignment between procurement plans and production/sales forecasts." },
-                    { process: "Procurement to Pay", scope: "Periodic budgeting & procurement planning", audit: "Controls around emergency/unbudgeted procurement." },
-                    { process: "Procurement to Pay", scope: "Periodic budgeting & procurement planning", audit: "Reviewing if the plan considers effective balancing between excess procurement and inventory stock-outs." },
-                    { process: "Procurement to Pay", scope: "Periodic budgeting & procurement planning", audit: "Review of quantity break-based planning (MOQ, EOQ, and bulk discounts)." }
+					{ process: "Procurement to Pay", scope: "Periodic budgeting & procurement planning", audit: "Linkage between the budget and the organization's strategic objectives." },
+					{ process: "Procurement to Pay", scope: "Periodic budgeting & procurement planning", audit: "Effective communication of the budget prepared with those concerned." },
+					{ process: "Procurement to Pay", scope: "Periodic budgeting & procurement planning", audit: "Validation of the structured review and approval process." },
+					{ process: "Procurement to Pay", scope: "Periodic budgeting & procurement planning", audit: "Scrutiny of tools and processes involved in the budgeting process." },
+					{ process: "Procurement to Pay", scope: "Periodic budgeting & procurement planning", audit: "Confirming that procurement needs from different departments are consolidated and addressed at the company level." },
+					{ process: "Procurement to Pay", scope: "Periodic budgeting & procurement planning", audit: "Alignment between procurement plans and production/sales forecasts." },
+					{ process: "Procurement to Pay", scope: "Periodic budgeting & procurement planning", audit: "Controls around emergency/unbudgeted procurement." },
+					{ process: "Procurement to Pay", scope: "Periodic budgeting & procurement planning", audit: "Reviewing if the plan considers effective balancing between excess procurement and inventory stock-outs." },
+					{ process: "Procurement to Pay", scope: "Periodic budgeting & procurement planning", audit: "Review of quantity break-based planning (MOQ, EOQ, and bulk discounts)." }
                 ],
                 "Spend analytics": [
-                    { process: "Procurement to Pay", scope: "Spend analytics", audit: "Verification that the spend data is complete and accurate." },
-                    { process: "Procurement to Pay", scope: "Spend analytics", audit: "Regular review of spend reports by management for selected months, investigating any material variances." }
+                    { process: "Procurement to Pay", scope: "Spend analytics", audit: "Verification that the budget is actively used to monitor performance throughout the year and that a formal process exists to analyze and act upon variances." },
+					{ process: "Procurement to Pay", scope: "Spend analytics", audit: "Review of purchase indents vs approved procurement plan." }
+                ],
+                "Vendor selection and evaluation": [
+                    { process: "Vendor assessment", scope: "Vendor selection and evaluation", audit: "Review of the criteria involved in vendor selection." },
+					{ process: "Vendor assessment", scope: "Vendor selection and evaluation", audit: "Review of the due diligence performed before onboarding a vendor." },
+					{ process: "Vendor assessment", scope: "Vendor selection and evaluation", audit: "Evaluation of alignment of the vendor selection criteria with the organizational objectives." },
+					{ process: "Vendor assessment", scope: "Vendor selection and evaluation", audit: "Review of existence and adherence to an appropriate delegation of authority with respect to vendor selection and evaluation." },
+					{ process: "Vendor assessment", scope: "Vendor selection and evaluation", audit: "Review of events concerning related parties." },
+					{ process: "Vendor assessment", scope: "Vendor selection and evaluation", audit: "Assess efforts to develop alternative sources of supply." }
+                ],
+                "Quotation analysis and negotiation": [
+                    { process: "Vendor assessment", scope: "Quotation analysis and negotiation", audit: "Confirmation of existence of and consistent adherence to a competitive bidding process." },
+					{ process: "Vendor assessment", scope: "Quotation analysis and negotiation", audit: "If selection is via tender, verify adherence to the tendering procedure, including maintaining closing date/time and documentation of reasons if the contract is awarded to a bidder other than the lowest." }
+                ],
+                "Vendor onboarding": [
+                    { process: "Procurement to Pay", scope: "Vendor onboarding", audit: "Ensuring all mandatory documents are collected and verified." },
+                    { process: "Procurement to Pay", scope: "Vendor onboarding", audit: "Verification that all required documents are collected and validated before a vendor is added to the master file." },
+                    { process: "Procurement to Pay", scope: "Vendor onboarding", audit: "Ensuring statutory details like PAN and GST numbers are verified with government portals." },
+                    { process: "Procurement to Pay", scope: "Vendor onboarding", audit: "Confirming there is a segregation of duties between the person initiating the vendor creation and the one approving it." },
+                    { process: "Procurement to Pay", scope: "Vendor onboarding", audit: "Reviewing the process for any exceptions or deviations from the standard onboarding procedure." },
+                    { process: "Procurement to Pay", scope: "Vendor onboarding", audit: "Validating the process to ensure that bank account details are verified before being updated in the system." },
+                    { process: "Procurement to Pay", scope: "Vendor onboarding", audit: "Testing the callback procedure for changes to sensitive vendor data (especially bank accounts) to an independently verified contact person." }
+                ],
+                "Contract lifecycle management": [
+                    { process: "Procurement to Pay", scope: "Contract lifecycle management", audit: "Ensuring all high-value procurement is backed by legally vetted contracts or agreements." },
+                    { process: "Procurement to Pay", scope: "Contract lifecycle management", audit: "Testing the system for tracking key contract milestones, expiry, and renewal dates." },
+                    { process: "Procurement to Pay", scope: "Contract lifecycle management", audit: "Verifying compliance with key clauses such as pricing, delivery terms, and service levels." },
+                    { process: "Procurement to Pay", scope: "Contract lifecycle management", audit: "Reviewing the process for contract amendments and ensuring they are properly authorized." },
+                    { process: "Procurement to Pay", scope: "Contract lifecycle management", audit: "Audit of contract close-out procedures to ensure all deliverables were met and final payments are accurate." }
+                ],
+                "Vendor data management": [
+                    { process: "Vendor assessment", scope: "Vendor data management", audit: "Checking the Access Control List (ACL) to ensure that the right to add or alter vendor master records is restricted only to authorized personnel." },
+					{ process: "Vendor assessment", scope: "Vendor data management", audit: "Verifying that all mandatory fields defined in the system are accurately populated." },
+					{ process: "Vendor assessment", scope: "Vendor data management", audit: "Reviewing system settings and performing data analytics to identify and prevent the creation of duplicate vendor codes" },
+					{ process: "Vendor assessment", scope: "Vendor data management", audit: "Ensuring a log of all requests to change supplier master file data is maintained and reviewed timely." },
+					{ process: "Vendor assessment", scope: "Vendor data management", audit: "Auditing the functionality that flags "One-time vendors" to ensure the vendor code is automatically deactivated after one Purchase Order (PO)." },
+					{ process: "Vendor assessment", scope: "Vendor data management", audit: "Verify that vendors are classified correctly and that annual updates are tracked." },
+					{ process: "Vendor assessment", scope: "Vendor data management", audit: "Screening for duplicate/related party/blacklisted vendors." }
+                ],
+                "Periodic vendor evaluation": [
+                    { process: "Vendor assessment", scope: "Periodic vendor evaluation", audit: "Confirming that a periodic performance review of critical vendors is conducted." },
+                    { process: "Vendor assessment", scope: "Periodic vendor evaluation", audit: "Verifying that the evaluation is based on predefined criteria like quality, delivery, and price." },
+                    { process: "Vendor assessment", scope: "Periodic vendor evaluation", audit: "Ensuring that the results of the evaluation are documented and communicated to the vendor." },
+                    { process: "Vendor assessment", scope: "Periodic vendor evaluation", audit: "Reviewing the actions taken based on vendor performance evaluations." },
+                    { process: "Vendor assessment", scope: "Periodic vendor evaluation", audit: "Assessing if vendor performance evaluation includes user/stakeholder feedback from the departments that use the goods/services." },
+					{ process: "Vendor assessment", scope: "Periodic vendor evaluation", audit: "To ensure a structured process exists for periodically evaluating the performance of key vendors against agreed-upon metrics (KPIs)." }
+                ],
+                "Purchase requisition": [
+                    { process: "Procurement to Pay", scope: "Purchase requisition", audit: "Reviewing the PR in light of pre-approved annual operating plans, capital expenditure (Capex) budgets, or production schedules." },
+					{ process: "Procurement to Pay", scope: "Purchase requisition", audit: "Review of process around determination of current stock levels for materials requisitioned." },
+					{ process: "Procurement to Pay", scope: "Purchase requisition", audit: "Verification of material referencing to material master and BOM" },
+					{ process: "Procurement to Pay", scope: "Purchase requisition", audit: "Review of process around special/urgent requisitions" },
+					{ process: "Procurement to Pay", scope: "Purchase requisition", audit: "Verification of process for review of open PRs" },
+					{ process: "Procurement to Pay", scope: "Purchase requisition", audit: "Review of authorization matrix for PR and adherence to the same" },
+					{ process: "Procurement to Pay", scope: "Purchase requisition", audit: "Review of controls around segregation of duties for requisitions" },
+					{ process: "Procurement to Pay", scope: "Purchase requisition", audit: "Verification of controls around PRs exceeding budgetary restrictions" },
+					{ process: "Procurement to Pay", scope: "Purchase requisition", audit: "Review of system controls around data validation and mandatory field enforcement" },
+					{ process: "Procurement to Pay", scope: "Purchase requisition", audit: "Verification of presence of controls regarding change management and review of audit trails" }
+                ],
+                "Purchase order": [
+                    { process: "Procurement to Pay", scope: "Purchase order", audit: "Verifying material specifications and other details are aligned with the purchase requisition" },
+					{ process: "Procurement to Pay", scope: "Purchase order", audit: "Reviewing POs for the inclusion of standard terms and conditions, including clauses for quality, right of rejection, and delivery schedules." },
+					{ process: "Procurement to Pay", scope: "Purchase order", audit: "Confirming that the final approver possesses the necessary Delegated Financial Authority corresponding to the total value of the PO." },
+					{ process: "Procurement to Pay", scope: "Purchase order", audit: "Transmission of POs to the vendors." },
+					{ process: "Procurement to Pay", scope: "Purchase order", audit: "Reviewing the process for amending POs." },
+					{ process: "Procurement to Pay", scope: "Purchase order", audit: "Reviewing the process for periodic review and closure of open POs." },
+					{ process: "Procurement to Pay", scope: "Purchase order", audit: "Verifying that POs are correctly closed upon complete receipt of goods/services and final invoicing." },
+					{ process: "Procurement to Pay", scope: "Purchase order", audit: "Verifying controls in place to prevent duplicates or manual overrides of POs." },
+					{ process: "Procurement to Pay", scope: "Purchase order", audit: "Reviewing system-generated logs or reports for any unusual activity." }
+                ],
+                "Inward logistics management": [
+					{ process: "Logistics Management", scope: "Inward logistics management", audit: "Reviewing the procedure for enlistment of transporters, tendering, and negotiation of prices to ensure cost minimization and fairness." },
+					{ process: "Logistics Management", scope: "Inward logistics management", audit: "Evaluating contracts with transport contractors." },
+					{ process: "Logistics Management", scope: "Inward logistics management", audit: "Verifying the performance evaluation of transporters." },
+					{ process: "Logistics Management", scope: "Inward logistics management", audit: "Assessing the choice of transport mode (e.g., assessing the propriety of choosing air consignment over surface transport, and checking for clearing delays that might defeat the purpose of airfreight)." },
+					{ process: "Logistics Management", scope: "Inward logistics management", audit: "Checking whether transport contracts clearly specify the responsibility for loading and unloading of goods." },
+					{ process: "Logistics Management", scope: "Inward logistics management", audit: "Evaluating the extent of business allocated to each transporter and verifying that the allocation of sectors is fair and unbiased." },
+					{ process: "Logistics Management", scope: "Inward logistics management", audit: "Review of inbound shipment planning aligned with procurement and production schedules." },
+					{ process: "Logistics Management", scope: "Inward logistics management", audit: "Monitoring vendor delivery timelines vs. PO dates – tracking delays, penalties, and escalations." },
+					{ process: "Logistics Management", scope: "Inward logistics management", audit: "Inspection of GRN documentation – delays, mismatch, excess/short receipts." },
+					{ process: "Logistics Management", scope: "Inward logistics management", audit: "Freight terms (FOB/CIF) validation and landed cost allocation." },
+					{ process: "Logistics Management", scope: "Inward logistics management", audit: "Cross verification of delivery acknowledgments (LR, Waybill, POD) with receipts in ERP." },
+					{ process: "Logistics Management", scope: "Inward logistics management", audit: "Controls over demurrage/detention costs and their recoverability." },
+					{ process: "Logistics Management", scope: "Inward logistics management", audit: "Freight spend benchmarking, Route optimization validation, Hidden surcharges/detentions" },
+					{ process: "Logistics Management", scope: "Inward logistics management", audit: "Reviewing controls to ensure procurement requirements are evaluated for scheduling deliveries optimally." },
+					{ process: "Logistics Management", scope: "Inward logistics management", audit: "Reviewing the laid down transit time against the actual transit time, and assessing the effectiveness of follow-up procedures for delayed transit." },
+					{ process: "Logistics Management", scope: "Inward logistics management", audit: "Examining detention charges and scrutinizing detention slips for authenticity and accurate billing." },
+					{ process: "Logistics Management", scope: "Inward logistics management", audit: "Checking the proper system for verifying and paying demurrage, wharfage, and clearing expenses on imports." }
+                ],
+                "Inward goods tracking": [
+                    { process: "Procurement to Pay", scope: "Inward goods tracking", audit: "Assessing the system for tracking incoming shipments." },
+                    { process: "Procurement to Pay", scope: "Inward goods tracking", audit: "Verifying that there is proactive communication between procurement, stores, and the vendor regarding shipment status." },
+                    { process: "Procurement to Pay", scope: "Inward goods tracking", audit: "Confirming that the system provides visibility into expected delivery dates to allow for better resource planning at the receiving end." }
+                ],
+                "Goods receipt": [
+                    { process: "Procurement to Pay", scope: "Goods receipt", audit: "Validation of controls to ensure goods are not received without a valid Purchase Order (PO)." },
+					{ process: "Procurement to Pay", scope: "Goods receipt", audit: "Review of system controls that prevent receiving quantities greater than the PO specified quantity, plus any allowed tolerance." },
+					{ process: "Procurement to Pay", scope: "Goods receipt", audit: "Assessment of controls for recording partial or excess/short receipts." },
+					{ process: "Procurement to Pay", scope: "Goods receipt", audit: "Analysis of the time lag between the physical receipt of goods and their entry into the ERP system." },
+					{ process: "Procurement to Pay", scope: "Goods receipt", audit: "3-way match controls – PO, GRN, Invoice quantity and rate match." },
+					{ process: "Procurement to Pay", scope: "Goods receipt", audit: "GRN reversal, cancellation, and duplicate entry logic." },
+					{ process: "Procurement to Pay", scope: "Goods receipt", audit: "Confirm that a physical count of the goods received is performed and compared accurately against the quantity specified in the PO and the supplier's documents." },
+					{ process: "Procurement to Pay", scope: "Goods receipt", audit: "Validate the effectiveness of the system for weightment or counting." },
+					{ process: "Procurement to Pay", scope: "Goods receipt", audit: "Verify that the GRN is prepared based on the valid delivery note/service completion documents." }
+                ],
+                "Quality check": [
+                    { process: "Inventory", scope: "Quality check", audit: "Verifying that the material is subjected to the inspection procedure laid down and has been passed." },
+					{ process: "Inventory", scope: "Quality check", audit: "Checking that the material has been subjected to the necessary quality check and that an analysis report is prepared and reviewed. " },
+					{ process: "Inventory", scope: "Quality check", audit: "Verifying the sampling process to ensure it is performed in accordance with standard sampling procedures." },
+					{ process: "Inventory", scope: "Quality check", audit: "Confirming that the stock ledger is updated only after quality approval of goods." },
+					{ process: "Inventory", scope: "Quality check", audit: "Reviewing procedures and reports for GRNs/MRNs lying open for an unreasonable period pending quality clearance." }
+                ],
+                "Vendor returns and other adjustments": [
+                    { process: "Procurement to Pay", scope: "Vendor returns and other adjustments", audit: "Review of process and controls for initiating purchase returns due to quality issues, excess supply, or incorrect material." },
+					{ process: "Procurement to Pay", scope: "Vendor returns and other adjustments", audit: "Assessment of approval mechanism and validation checks before processing returns." },
+					{ process: "Procurement to Pay", scope: "Vendor returns and other adjustments", audit: "Linkage of returned goods to original GRN/PO/invoice for quantity and rate matching." },
+					{ process: "Procurement to Pay", scope: "Vendor returns and other adjustments", audit: "Verification of debit note issuance, accounting treatment, and vendor ledger impact." },
+					{ process: "Procurement to Pay", scope: "Vendor returns and other adjustments", audit: "Evaluation of timelines between return initiation, physical movement, and ledger adjustments." },
+					{ process: "Procurement to Pay", scope: "Vendor returns and other adjustments", audit: "Validation of physical segregation, disposal, or return-to-vendor process." },
+					{ process: "Procurement to Pay", scope: "Vendor returns and other adjustments", audit: "Review of recurring rejection trends and whether root cause is documented and escalated." }
+                ],
+                "Purchase invoice processing": [
+                    { process: "Procurement to Pay", scope: "Purchase invoice processing", audit: "Verifying that all invoices are subject to a three-way match (PO vs. GRN vs. Invoice)." },
+                    { process: "Procurement to Pay", scope: "Purchase invoice processing", audit: "Testing the mathematical accuracy of invoices." },
+                    { process: "Procurement to Pay", scope: "Purchase invoice processing", audit: "Ensuring that duplicate invoices are identified and prevented from being processed." },
+                    { process: "Procurement to Pay", scope: "Purchase invoice processing", audit: "Confirming that invoices are booked in the correct accounting period." },
+                    { process: "Procurement to Pay", scope: "Purchase invoice processing", audit: "Reviewing the process for handling invoices without a PO (non-PO invoices)." },
+                    { process: "Procurement to Pay", scope: "Purchase invoice processing", audit: "Ensuring that invoices are approved for payment by the appropriate authority." },
+                    { process: "Procurement to Pay", scope: "Purchase invoice processing", audit: "Assessing controls over the processing of advance payments to vendors." },
+                    { process: "Procurement to Pay", scope: "Purchase invoice processing", audit: "Verifying that credit notes are properly adjusted against payments." },
+                    { process: "Procurement to Pay", scope: "Purchase invoice processing", audit: "Reviewing the adequacy of the provision for expenses for un-invoiced receipts at period-end." },
+                    { process: "Procurement to Pay", scope: "Purchase invoice processing", audit: "Checking if there is a system to track and resolve invoice discrepancies." },
+                    { process: "Procurement to Pay", scope: "Purchase invoice processing", audit: "Reviewing the process for handling urgent payments." },
+                    { process: "Procurement to Pay", scope: "Purchase invoice processing", audit: "Ensuring proper documentation is in place for payments made on a proforma invoice." },
+                    { process: "Procurement to Pay", scope: "Purchase invoice processing", audit: "Reviewing the logic and process for GR/IR account reconciliation." },
+                    { process: "Procurement to Pay", scope: "Purchase invoice processing", audit: "Analysis of invoice processing times (from receipt to payment approval) to identify bottlenecks and risks of late payment penalties." },
+                    { process: "Procurement to Pay", scope: "Purchase invoice processing", audit: "Using data analytics to identify invoices just below approval thresholds, which might indicate attempts to circumvent controls." }
+                ],
+                "Payment and AP Management": [
+                    { process: "Procurement to Pay", scope: "Payment and AP Management", audit: "Ensuring segregation of duties between invoice processing and payment execution." },
+                    { process: "Procurement to Pay", scope: "Payment and AP Management", audit: "Verifying that payments are made only for approved invoices." },
+                    { process: "Procurement to Pay", scope: "Payment and AP Management", audit: "Testing the controls over the payment batch preparation and approval process." },
+                    { process: "Procurement to Pay", scope: "Payment and AP Management", audit: "Confirming that payments are made within the agreed credit period to avail early payment discounts, if any." },
+                    { process: "Procurement to Pay", scope: "Payment and AP Management", audit: "Ensuring the security of cheque books and digital signatures." },
+                    { process: "Procurement to Pay", scope: "Payment and AP Management", audit: "Verifying that vendor bank account details are correct before payment." },
+                    { process: "Procurement to Pay", scope: "Payment and AP Management", audit: "Testing for duplicate payments." },
+                    { process: "Procurement to Pay", scope: "Payment and AP Management", audit: "Reconciling vendor statements with the company's accounts payable records." },
+                    { process: "Procurement to Pay", scope: "Payment and AP Management", audit: "Reviewing the ageing of accounts payable and investigating long-outstanding balances." },
+                    { process: "Procurement to Pay", scope: "Payment and AP Management", audit: "Assessing the process for handling payment rejections or failures." },
+                    { process: "Procurement to Pay", scope: "Payment and AP Management", audit: "Verifying that advances to vendors are adjusted against subsequent invoices in a timely manner." },
+                    { process: "Procurement to Pay", scope: "Payment and AP Management", audit: "Ensuring that foreign payments are compliant with FEMA regulations." },
+                    { process: "Procurement to Pay", scope: "Payment and AP Management", audit: "Reviewing the bank reconciliation process for payment accounts." },
+                    { process: "Procurement to Pay", scope: "Payment and AP Management", audit: "Confirming that access to the online banking portal is restricted to authorized personnel." },
+                    { process: "Procurement to Pay", scope: "Payment and AP Management", audit: "Review of the reconciliation process between the payment proposal/batch file and the actual bank debit." },
+                    { process: "Procurement to Pay", scope: "Payment and AP Management", audit: "Assessing controls over emergency/manual payments made outside the standard payment run." },
+					{ process: "Procurement to Pay", scope: "Payment and AP Management", audit: "Auditing the manual and automated processes used to record accruals for goods or services received but not yet invoiced." },
+					{ process: "Procurement to Pay", scope: "Payment and AP Management", audit: "Checking procedures for the timely and accurate accounting and reconciliation of provisional invoices." },
+					{ process: "Procurement to Pay", scope: "Payment and AP Management", audit: "Assessment of the adequacy and rationale of provisions related to operating expenses." },
+					{ process: "Procurement to Pay", scope: "Payment and AP Management", audit: "Verification that payment execution follows the approved internal control structure." },
+					{ process: "Procurement to Pay", scope: "Payment and AP Management", audit: "Evaluating the controls separating incompatible duties related to disbursements." },
+					{ process: "Procurement to Pay", scope: "Payment and AP Management", audit: "Assessing controls over bank payments." },
+					{ process: "Procurement to Pay", scope: "Payment and AP Management", audit: "Reviewing the controls governing advances or deposits made to vendors and ensuring their timely adjustment against future invoices." },
+					{ process: "Procurement to Pay", scope: "Payment and AP Management", audit: "Validating that bank account details in the vendor master match the details on cancelled cheques or formal bank confirmation letters provided during the onboarding process to mitigate payment diversion risk." }
                 ],
                 "Compliance": [
-                    { process: "Statutory Compliance - Procurement to Pay", scope: "Compliance", audit: "Testing the calculation and deduction of TDS on vendor payments, ensuring the base value for deduction correctly excludes the GST amount as per tax regulations." },
-                    { process: "Statutory Compliance - Procurement to Pay", scope: "Compliance", audit: "Identifying transactions liable under the Reverse Charge Mechanism (RCM) and verifying the generation of a self-invoice and the timely payment and disclosure of the corresponding GST liability." },
-                    { process: "Statutory Compliance - Procurement to Pay", scope: "Compliance", audit: "Reviewing specific expense ledgers to ensure ITC has not been claimed on items listed under blocked credits." },
-                    { process: "Statutory Compliance - Procurement to Pay", scope: "Compliance", audit: "Tracing the IGST and customs duty amounts from BOE to the general ledger and the ITC register to confirm the accuracy and basis of the ITC claim." },
-                    { process: "Statutory Compliance - Procurement to Pay", scope: "Compliance", audit: "Verifying that payments for imports of goods have been completed within six months from the date of shipment as required by FEMA guidelines." },
-                    { process: "Statutory Compliance - Procurement to Pay", scope: "Compliance", audit: "Confirming that for advance remittances made to overseas vendors, the corresponding Bill of Entry has been submitted to the authorized dealer bank within the prescribed regulatory timeline." },
-                    { process: "Statutory Compliance - Procurement to Pay", scope: "Compliance", audit: "Assessing payments for the import of services to ensure appropriate TDS has been deducted." }
+                    { process: "Statutory Compliance - Procurement to Pay", scope: "Compliance", audit: "Verifying the validity and active status of vendor GSTINs against the GSTN portal for all vendors onboarded during the audit period." },
+					{ process: "Statutory Compliance - Procurement to Pay", scope: "Compliance", audit: "Confirming the existence and accuracy of vendor Permanent Account Numbers (PAN) by cross-referencing against the Income Tax Department's database." },
+					{ process: "Statutory Compliance - Procurement to Pay", scope: "Compliance", audit: "Ensuring that a formal process exists to obtain, validate, and update certificates for all vendors declaring Micro, Small, or Medium Enterprise (MSME) status." },
+					{ process: "Statutory Compliance - Procurement to Pay", scope: "Compliance", audit: "Checking that the vendor master file accurately flags the appropriate TDS sections applicable to each vendor based on the defined nature of their services or goods." },
+					{ process: "Statutory Compliance - Procurement to Pay", scope: "Compliance", audit: "Examining processed invoices to ensure they are tax-compliant under the GST Act, containing all mandatory fields." },
+					{ process: "Statutory Compliance - Procurement to Pay", scope: "Compliance", audit: "Reconciling the Input Tax Credit (ITC) claimed in the GSTR-3B return with the eligible credit auto-populated in the GSTR-2B statement for selected months, investigating any material variances." },
+					{ process: "Statutory Compliance - Procurement to Pay", scope: "Compliance", audit: "Testing the calculation and deduction of TDS on vendor payments, ensuring the base value for deduction correctly excludes the GST amount as per tax regulations." },
+					{ process: "Statutory Compliance - Procurement to Pay", scope: "Compliance", audit: "Identifying transactions liable under the Reverse Charge Mechanism (RCM) and verifying the generation of a self-invoice and the timely payment and disclosure of the corresponding GST liability." },
+					{ process: "Statutory Compliance - Procurement to Pay", scope: "Compliance", audit: "Reviewing specific expense ledgers to ensure ITC has not been claimed on items listed under blocked credits." },
+					{ process: "Statutory Compliance - Procurement to Pay", scope: "Compliance", audit: "Tracing the IGST and customs duty amounts from BOE to the general ledger and the ITC register to confirm the accuracy and basis of the ITC claim." },
+					{ process: "Statutory Compliance - Procurement to Pay", scope: "Compliance", audit: "Verifying that payments for imports of goods have been completed within six months from the date of shipment as required by FEMA guidelines." },
+					{ process: "Statutory Compliance - Procurement to Pay", scope: "Compliance", audit: "Confirming that for advance remittances made to overseas vendors, the corresponding Bill of Entry has been submitted to the authorized dealer bank within the prescribed regulatory timeline." },
+					{ process: "Statutory Compliance - Procurement to Pay", scope: "Compliance", audit: "Assessing payments for the import of services to ensure appropriate TDS has been deducted." }
                 ]
              },
             initializedFields: {} // { 'riskId-fieldName': true }
@@ -539,7 +709,7 @@
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
             link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "p2p_risk_register_v5.csv");
+            link.setAttribute("download", "p2p_risk_register_v6.0.csv");
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
